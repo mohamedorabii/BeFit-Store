@@ -704,3 +704,228 @@ footer a:hover {
 .shop-pagination .page-item.disabled .page-link {
     opacity: .4;
 }
+
+/* =======================
+    PRODUCT DETAIL PAGE
+========================== */
+.product-page {
+    padding: 50px 0 100px;
+}
+
+.product-page .breadcrumb-custom {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 34px;
+}
+
+.product-page .breadcrumb-custom a {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.product-gallery-main {
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: var(--cream, #F2F1EE);
+}
+
+.product-gallery-main img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+}
+
+.product-gallery-thumbs {
+    display: flex;
+    gap: 12px;
+}
+
+.product-gallery-thumbs img {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: .2s;
+}
+
+.product-gallery-thumbs img.active,
+.product-gallery-thumbs img:hover {
+    border-color: var(--primary);
+}
+
+.product-info .p-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 10px 0 6px;
+}
+
+.product-info .p-stars {
+    color: #ffc107;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.product-info .p-stars span {
+    color: var(--gray);
+    font-size: 13px;
+    margin-left: 6px;
+}
+
+.product-info .p-price {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.product-info .p-price .now {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.product-info .p-price .old {
+    font-size: 17px;
+    color: #b0aa9c;
+    text-decoration: line-through;
+}
+
+.product-info .p-desc {
+    color: var(--gray);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 28px;
+}
+
+.option-group {
+    margin-bottom: 26px;
+}
+
+.option-group .opt-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 12px;
+}
+
+.qty-cart-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.qty-stepper {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.qty-stepper button {
+    width: 44px;
+    height: 52px;
+    border: none;
+    background: var(--card);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--dark);
+}
+
+.qty-stepper button:hover {
+    background: var(--cream, #F2F1EE);
+}
+
+.qty-stepper input {
+    width: 44px;
+    height: 52px;
+    border: none;
+    border-left: 1.5px solid var(--line);
+    border-right: 1.5px solid var(--line);
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.qty-cart-row .add-cart {
+    flex: 1;
+    border-radius: 10px;
+}
+
+.wish-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: .2s;
+}
+
+.wish-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.p-meta-list {
+    list-style: none;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.p-meta-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--gray);
+    padding: 5px 0;
+}
+
+.p-meta-list li b {
+    color: var(--dark);
+    min-width: 90px;
+}
+
+/* Tabs */
+.product-tabs {
+    margin-top: 70px;
+}
+
+.product-tabs .nav-tabs {
+    border-bottom: 1.5px solid var(--line);
+    margin-bottom: 30px;
+}
+
+.product-tabs .nav-link {
+    border: none;
+    color: var(--gray);
+    font-weight: 700;
+    padding: 12px 22px;
+}
+
+.product-tabs .nav-link.active {
+    color: var(--primary);
+    border-bottom: 2.5px solid var(--primary);
+    background: none;
+}
+
+.product-tabs .tab-pane p {
+    color: var(--gray);
+    line-height: 1.8;
+    max-width: 720px;
+}
+
+/* Related */
+.related-products {
+    padding: 90px 0 0;
+}
