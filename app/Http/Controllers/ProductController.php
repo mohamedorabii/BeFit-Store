@@ -41,7 +41,7 @@ class ProductController extends Controller
 
         $relatedProducts = [
             ['title' => 'Running Shoes', 'description' => 'Comfort & performance combined.', 'price' => 79, 'old_price' => 110, 'badge' => 'HOT', 'url' => '/product/running-shoes', 'image' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop'],
-            ['title' => 'Training Shorts', 'description' => 'Flexible fit with premium comfort.', 'price' => 29, 'old_price' => 45, 'badge' => 'SALE', 'url' => '/product/training-shorts', 'image' => 'https://images.unsplash.com/photo-1506629905607-d9a31768d35f?q=80&w=900&auto=format&fit=crop'],
+            ['title' => 'Training Shorts', 'description' => 'Flexible fit with premium comfort.', 'price' => 29, 'old_price' => 45, 'badge' => 'SALE', 'url' => '/product/training-shorts', 'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop'],
             ['title' => 'Performance Hoodie', 'description' => 'Warm, light, and built to move.', 'price' => 59, 'old_price' => null, 'badge' => null, 'url' => '/product/performance-hoodie', 'image' => 'https://images.unsplash.com/photo-1509942774463-acf339cf87d5?q=80&w=900&auto=format&fit=crop'],
             ['title' => 'Tank Top', 'description' => 'Lightweight layer for warm-weather sessions.', 'price' => 25, 'old_price' => 35, 'badge' => 'SALE', 'url' => '/product/tank-top', 'image' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?q=80&w=900&auto=format&fit=crop'],
         ];

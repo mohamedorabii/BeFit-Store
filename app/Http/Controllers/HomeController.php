@@ -58,7 +58,7 @@ class HomeController extends Controller
                 'old_price' => 45,
                 'badge' => 'SALE',
                 'url' => '/product/training-shorts',
-                'image' => 'https://images.unsplash.com/photo-1506629905607-d9a31768d35f?q=80&w=900&auto=format&fit=crop',
+                'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop',
             ],
             [
                 'title' => "Women's Set",

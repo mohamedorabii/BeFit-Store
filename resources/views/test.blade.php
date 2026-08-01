@@ -1005,7 +1005,7 @@ footer a:hover{
 
                         <span class="badge-sale">SALE</span>
 
-                        <img src="https://images.unsplash.com/photo-1506629905607-d9a31768d35f?q=80&w=900&auto=format&fit=crop">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop">
 
                     </div>
 

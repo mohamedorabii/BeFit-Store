@@ -36,7 +36,7 @@ class CategoryController extends Controller
                 'title' => 'Accessories',
                 'url' => '/shop?category=accessories',
                 'count' => 9,
-                'image' => 'https://images.unsplash.com/photo-1506629905607-d9a31768d35f?q=80&w=900&auto=format&fit=crop',
+                'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop',
             ],
             [
                 'title' => 'Outerwear',
