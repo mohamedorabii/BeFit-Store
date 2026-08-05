@@ -36,7 +36,13 @@
                 <i class="fa-solid fa-magnifying-glass" title="Search"></i>
                 <a href="{{ url('/wishlist') }}"><i class="fa-regular fa-heart" title="Wishlist"></i></a>
                 <a href="{{ url('/login') }}"><i class="fa-regular fa-user" title="Account"></i></a>
-                <a href="{{ url('/cart') }}"><i class="fa-solid fa-bag-shopping" title="Cart"></i></a>
+                <a href="{{ url('/cart') }}" class="position-relative">
+                    <i class="fa-solid fa-bag-shopping" title="Cart"></i>
+                    @php $cartCount = collect(session('cart', []))->sum('quantity'); @endphp
+                    @if ($cartCount > 0)
+                        <span class="nav-cart-count">{{ $cartCount }}</span>
+                    @endif
+                </a>
             </div>
 
         </div>

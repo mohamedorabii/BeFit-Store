@@ -9,15 +9,15 @@
 ])
 
 <div class="product-card">
-    <div class="product-image">
+    <a href="{{ url($url) }}" class="product-image d-block">
         @if ($badge)
             <span class="badge-sale">{{ $badge }}</span>
         @endif
         <img src="{{ $image }}" alt="{{ $title }}">
-    </div>
+    </a>
     <div class="product-content">
         <div class="stars">★★★★★</div>
-        <h4>{{ $title }}</h4>
+        <h4><a href="{{ url($url) }}" class="text-reset">{{ $title }}</a></h4>
         <p>{{ $description }}</p>
         <div class="price">
             <span>${{ number_format($price, 0) }}</span>
@@ -28,6 +28,10 @@
         <form action="{{ url('/cart/add') }}" method="POST">
             @csrf
             <input type="hidden" name="url" value="{{ $url }}">
+            <input type="hidden" name="title" value="{{ $title }}">
+            <input type="hidden" name="price" value="{{ $price }}">
+            <input type="hidden" name="image" value="{{ $image }}">
+            <input type="hidden" name="quantity" value="1">
             <button type="submit" class="add-cart">Add To Cart</button>
         </form>
     </div>

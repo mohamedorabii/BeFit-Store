@@ -49,6 +49,10 @@
 
                 <form action="{{ url('/cart/add') }}" method="POST">
                     @csrf
+                    <input type="hidden" name="url" value="/product/{{ $product['slug'] }}">
+                    <input type="hidden" name="title" value="{{ $product['title'] }}">
+                    <input type="hidden" name="price" value="{{ $product['price'] }}">
+                    <input type="hidden" name="image" value="{{ $product['image'] }}">
                     <input type="hidden" name="product" value="{{ $product['slug'] }}">
 
                     <div class="option-group">
@@ -81,12 +85,21 @@
                             <button type="button" onclick="this.previousElementSibling.value++;">+</button>
                         </div>
                         <button type="submit" class="add-cart">Add To Cart</button>
-                        <button type="button" class="wish-btn" title="Add to wishlist">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/>
-                            </svg>
-                        </button>
                     </div>
+                </form>
+
+                <form action="{{ url('/wishlist/add') }}" method="POST" class="qty-cart-row" style="margin-top:-14px;">
+                    @csrf
+                    <input type="hidden" name="title" value="{{ $product['title'] }}">
+                    <input type="hidden" name="price" value="{{ $product['price'] }}">
+                    <input type="hidden" name="image" value="{{ $product['image'] }}">
+                    <input type="hidden" name="url" value="/product/{{ $product['slug'] }}">
+                    <button type="submit" class="wish-btn" title="Add to wishlist" style="width:auto;padding:0 20px;gap:8px;display:flex;align-items:center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/>
+                        </svg>
+                        Save to Wishlist
+                    </button>
                 </form>
 
                 <ul class="p-meta-list">
