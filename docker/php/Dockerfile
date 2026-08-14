@@ -28,8 +28,17 @@ RUN docker-php-ext-install \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# --- الإضافة الجديدة: خلي www-data بنفس UID/GID بتاع اليوزر عندك في WSL ---
+ARG UID=1000
+ARG GID=1000
+
+RUN groupmod -o -g ${GID} www-data && \
+    usermod -o -u ${UID} -g ${GID} www-data
+
 WORKDIR /var/www
 
 EXPOSE 9000
+
+USER www-data
 
 CMD ["php-fpm"]

@@ -5,9 +5,13 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+      args:
+        UID: 1000
+        GID: 1000
     container_name: befit_app
     restart: unless-stopped
     working_dir: /var/www
+    user: "1000:1000"
     volumes:
       - .:/var/www
     depends_on:
