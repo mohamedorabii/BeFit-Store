@@ -13,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BackEnd\OtpController;
 use App\Http\Controllers\Auth\PasswordResetOtpController;
+use App\Http\Controllers\BackEnd\SocialAuthController;
 
-
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('social.redirect');
+    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('social.callback');
+});
 Auth::routes(['reset' => false, 'verify' => false]);
 
 Route::middleware('guest')->group(function () {

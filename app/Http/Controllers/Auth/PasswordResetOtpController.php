@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\PasswordResetOtpService;
+use App\Services\OtpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -14,7 +14,9 @@ class PasswordResetOtpController extends Controller
 {
     private const VERIFICATION_WINDOW_MINUTES = 10;
 
-    public function __construct(protected PasswordResetOtpService $otpService) {}
+    public function __construct(protected OtpService $otpService)
+    {
+    }
 
     public function create(): View
     {
@@ -37,18 +39,17 @@ class PasswordResetOtpController extends Controller
             ]);
         }
 
-        RateLimiter::hit($throttleKey, 60); // max 3 requests per minute per email+ip
+        RateLimiter::hit($throttleKey, 60);
 
         $user = User::where('email', $data['email'])->first();
 
         if ($user && $user->is_active) {
-            $this->otpService->generateAndSend($user);
+            $this->otpService->generateAndSendPasswordReset($user);
 
             $request->session()->put('password_reset_user_id', $user->id);
-            $request->session()->forget('password_reset_verified_at');
+            $request->session()->forget('password_reset_verified_until');
         }
 
-        // Always return the same response to avoid leaking whether the email exists.
         return redirect()->route('password.otp.show')
             ->with('status', 'If an account exists for that email, we sent a 6-digit reset code.');
     }
@@ -81,9 +82,9 @@ class PasswordResetOtpController extends Controller
             return back()->withErrors(['code' => $result['message']]);
         }
 
-        $request->session()->put('password_reset_verified_at', now());
         $request->session()->regenerate();
         $request->session()->put('password_reset_user_id', $user->id);
+        $request->session()->put('password_reset_verified_until', now()->addMinutes(self::VERIFICATION_WINDOW_MINUTES)->getTimestamp());
 
         return redirect()->route('password.reset')->with('status', $result['message']);
     }
@@ -114,17 +115,18 @@ class PasswordResetOtpController extends Controller
                 ->withErrors(['email' => 'Please request a new reset code.']);
         }
 
-        $this->otpService->resetPassword($user, $data['password']);
+        $user->forceFill([
+            'password' => $data['password'],
+            'remember_token' => null,
+        ])->save();
+        $this->otpService->clear($user);
 
-        $request->session()->forget(['password_reset_user_id', 'password_reset_verified_at']);
+        $request->session()->forget(['password_reset_user_id', 'password_reset_verified_until']);
         $request->session()->regenerate();
 
         return redirect()->route('login')->with('status', 'Your password has been reset. You can now sign in.');
     }
 
-    /**
-     * Resolve the user tied to the current password-reset session.
-     */
     private function resolveSessionUser(Request $request): ?User
     {
         $userId = $request->session()->get('password_reset_user_id');
@@ -132,17 +134,14 @@ class PasswordResetOtpController extends Controller
         return $userId ? User::find($userId) : null;
     }
 
-    /**
-     * Check the OTP was verified and the verification window hasn't expired.
-     */
     private function hasValidVerificationWindow(Request $request): bool
     {
-        $verifiedAt = $request->session()->get('password_reset_verified_at');
+        $verifiedUntil = $request->session()->get('password_reset_verified_until');
 
-        if (! $verifiedAt) {
+        if (! is_int($verifiedUntil) && ! ctype_digit((string) $verifiedUntil)) {
             return false;
         }
 
-        return now()->diffInMinutes($verifiedAt) <= self::VERIFICATION_WINDOW_MINUTES;
+        return now()->getTimestamp() <= (int) $verifiedUntil;
     }
 }

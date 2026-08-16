@@ -19,7 +19,7 @@ class OtpServiceTest extends TestCase
             'otp_attempts' => 0,
         ]);
 
-        $result = app(OtpService::class)->verify($user, '123456');
+        $result = app(OtpService::class)->verifyEmail($user, '123456');
 
         $this->assertTrue($result['success']);
         $this->assertNotNull($user->fresh()->email_verified_at);

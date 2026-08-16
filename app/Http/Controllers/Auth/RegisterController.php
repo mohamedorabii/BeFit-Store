@@ -73,7 +73,7 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user): RedirectResponse
     {
-        $this->otpService->generateAndSend($user);
+        $this->otpService->generateAndSendEmailVerification($user);
 
         return redirect()->route('otp.show')->with('status', 'We sent a verification code to your email.');
     }

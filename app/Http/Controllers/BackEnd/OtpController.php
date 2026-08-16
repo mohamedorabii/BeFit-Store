@@ -7,12 +7,13 @@ use App\Http\Requests\VerifyOtpRequest;
 use App\Services\OtpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class OtpController extends Controller
 {
     public function __construct(protected OtpService $otpService) {}
 
-    public function show(): \Illuminate\View\View
+    public function show(): View
     {
         return view('auth.verify-otp');
     }
@@ -25,14 +26,18 @@ class OtpController extends Controller
             return redirect()->route('home')->with('info', 'Account already verified.');
         }
 
-        $this->otpService->generateAndSend($user);
+        $result = $this->otpService->generateAndSendEmailVerification($user);
 
-        return back()->with('status', 'A verification code has been sent to your email.');
+        if (! $result['success']) {
+            return back()->withErrors(['code' => $result['message']]);
+        }
+
+        return back()->with('status', $result['message']);
     }
 
     public function verify(VerifyOtpRequest $request): RedirectResponse
     {
-        $result = $this->otpService->verify($request->user(), $request->validated('code'));
+        $result = $this->otpService->verifyEmail($request->user(), $request->validated('code'));
 
         if (! $result['success']) {
             return back()->withErrors(['code' => $result['message']]);

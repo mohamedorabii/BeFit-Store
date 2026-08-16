@@ -167,6 +167,88 @@ a {
 .auth-kicker { color: var(--primary); font-size: 12px; letter-spacing: 2px; font-weight: 700; margin-bottom: 10px; }
 .auth-card h1 { font-weight: 700; font-size: 30px; margin-bottom: 8px; }
 .auth-subtitle { color: var(--gray); margin-bottom: 28px; }
+.social-auth-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(22, 20, 15, .14);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--dark);
+    text-decoration: none;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+    box-shadow: 0 10px 24px rgba(22, 20, 15, .04);
+    margin-bottom: 18px;
+}
+
+.social-auth-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(27, 42, 74, .22);
+    box-shadow: 0 16px 32px rgba(22, 20, 15, .08);
+    color: var(--dark);
+    background: #fff;
+}
+
+.social-auth-btn-google .social-auth-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #f8f8f8, #efefef);
+    color: #ea4335;
+    font-size: 18px;
+}
+
+.social-auth-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+}
+
+.social-auth-text strong {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.social-auth-text small {
+    color: var(--gray);
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.auth-divider {
+    display: grid;
+    place-items: center;
+    margin: 18px 0 14px;
+    color: var(--gray);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    position: relative;
+}
+
+.auth-divider span {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    padding: 0 12px;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--line);
+}
 .auth-form { display: grid; gap: 8px; }
 .auth-form label { font-size: 14px; font-weight: 600; margin-top: 8px; }
 .auth-form input:not([type="checkbox"]) { border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; outline: none; }
@@ -185,6 +267,7 @@ a {
     .auth-page { padding: 40px 16px; }
     .auth-card { padding: 30px 24px; }
     .auth-options { align-items: flex-start; gap: 12px; flex-direction: column; }
+    .social-auth-btn { padding: 13px 14px; }
 }
 
 /* =======================
