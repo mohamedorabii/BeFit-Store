@@ -10,6 +10,22 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BackEnd\OtpController;
+use App\Http\Controllers\Auth\PasswordResetOtpController;
+
+
+Auth::routes(['reset' => false, 'verify' => false]);
+
+Route::middleware('guest')->group(function () {
+    Route::get('/password/reset', [PasswordResetOtpController::class, 'create'])->name('password.request');
+    Route::post('/password/email', [PasswordResetOtpController::class, 'send'])->name('password.email');
+    Route::get('/password/reset/code', [PasswordResetOtpController::class, 'showOtp'])->name('password.otp.show');
+    Route::post('/password/reset/code', [PasswordResetOtpController::class, 'verify'])->name('password.otp.verify');
+    Route::get('/password/reset/new', [PasswordResetOtpController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset/new', [PasswordResetOtpController::class, 'reset'])->name('password.update');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -55,3 +71,15 @@ Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('wishlist
 Route::delete('/wishlist/remove/{key}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 
 Route::get('/collections', [CollectionController::class, 'index'])->name('collections');
+
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/verify-otp', [OtpController::class, 'show'])->name('otp.show');
+    Route::post('/verify-otp/send', [OtpController::class, 'send'])->name('otp.send');
+    Route::post('/verify-otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
+});

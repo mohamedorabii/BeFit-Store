@@ -35,7 +35,30 @@
             <div class="nav-icons">
                 <i class="fa-solid fa-magnifying-glass" title="Search"></i>
                 <a href="{{ url('/wishlist') }}"><i class="fa-regular fa-heart" title="Wishlist"></i></a>
-                <a href="{{ url('/login') }}"><i class="fa-regular fa-user" title="Account"></i></a>
+                @auth('admin')
+                    <a href="{{ url('/admin') }}" class="admin-dashboard-link" title="Admin Dashboard">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </a>
+                @endauth
+                @auth
+                    <div class="dropdown">
+                        <button class="account-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Account">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end account-menu">
+                            <li><span class="dropdown-item-text">Hi, {{ auth()->user()->name }}</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button class="dropdown-item" type="submit">Sign out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}"><i class="fa-regular fa-user" title="Sign in"></i></a>
+                @endauth
                 <a href="{{ url('/cart') }}" class="position-relative">
                     <i class="fa-solid fa-bag-shopping" title="Cart"></i>
                     @php $cartCount = collect(session('cart', []))->sum('quantity'); @endphp
