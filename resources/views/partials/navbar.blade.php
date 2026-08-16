@@ -41,21 +41,9 @@
                     </a>
                 @endauth
                 @auth
-                    <div class="dropdown">
-                        <button class="account-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Account">
-                            <i class="fa-solid fa-user"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end account-menu">
-                            <li><span class="dropdown-item-text">Hi, {{ auth()->user()->name }}</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button class="dropdown-item" type="submit">Sign out</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
+                    <a href="{{ route('profile.edit') }}" title="My profile">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
                 @else
                     <a href="{{ route('login') }}"><i class="fa-regular fa-user" title="Sign in"></i></a>
                 @endauth
