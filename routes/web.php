@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordResetOtpController;
+use App\Http\Controllers\BackEnd\OtpController;
+use App\Http\Controllers\BackEnd\SocialAuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
@@ -9,12 +12,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\WishlistController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\BackEnd\OtpController;
-use App\Http\Controllers\Auth\PasswordResetOtpController;
-use App\Http\Controllers\BackEnd\SocialAuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('social.redirect');
@@ -90,3 +91,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/verify-otp/send', [OtpController::class, 'send'])->name('otp.send');
     Route::post('/verify-otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
 });
+
+Route::get('/subcategories', [SubcategoryController::class, 'index'])->name('subcategories.index');

@@ -19,17 +19,22 @@
                     <a class="nav-link {{ request()->is('shop*') ? 'active' : '' }}" href="{{ url('/shop') }}">Shop</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}" href="{{ url('/categories') }}">Categories</a>
+                    <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}"
+                        href="{{ url('/categories') }}">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('collections*') ? 'active' : '' }}" href="{{ url('/collections') }}">Collections</a>
+                    <a class="nav-link {{ request()->is('subcategories*') ? 'active' : '' }}"
+                        href="{{ url('/subcategories') }}">Subcategories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a>
+                    <a class="nav-link {{ request()->is('collections*') ? 'active' : '' }}"
+                        href="{{ url('/collections') }}">Collections</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact</a>
+                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}"
+                        href="{{ url('/about') }}">About</a>
                 </li>
+                
             </ul>
 
             <div class="nav-icons">
