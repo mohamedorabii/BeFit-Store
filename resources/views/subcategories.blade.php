@@ -20,14 +20,20 @@
                 @foreach ($subcategories as $subcategory)
                     <div class="col-lg-4 col-md-6">
                         <x-category-card
-                            :image="$subcategory['image']"
-                            :title="$subcategory['title']"
-                            :url="$subcategory['url']"
-                            :count="$subcategory['count']"
+                            :image="$subcategory->image"
+                            :title="$subcategory->name_en"
+                            :url="'/shop?subcategory=' . $subcategory->slug"
+                            :count="null"
                         />
                     </div>
                 @endforeach
             </div>
+
+            @if ($subcategories->hasPages())
+                <div class="shop-pagination">
+                    {{ $subcategories->links() }}
+                </div>
+            @endif
         </div>
     </section>
 
