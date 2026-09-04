@@ -37,13 +37,13 @@
                     @forelse ($products as $product)
                         <div class="col-lg-4 col-md-6">
                             <x-product-card
-                                :badge="$product['badge'] ?? null"
-                                :image="$product['image']"
-                                :title="$product['title']"
-                                :description="$product['description']"
-                                :price="$product['price']"
-                                :old-price="$product['old_price'] ?? null"
-                                :url="$product['url']"
+                                :badge="$product->badge"
+                                :image="$product->primaryImage->image ?? ''"
+                                :title="$product->name_en"
+                                :description="$product->description_en"
+                                :price="$product->price"
+                                :old-price="$product->old_price"
+                                :url="'/product/' . $product->slug"
                             />
                         </div>
                     @empty

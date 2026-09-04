@@ -21,9 +21,9 @@
         <div class="filter-title">Category</div>
         @foreach ($categories as $category)
             <label class="filter-check">
-                <input type="checkbox" name="category[]" value="{{ $category['slug'] }}">
-                {{ $category['title'] }}
-                <span class="count">({{ $category['count'] }})</span>
+                <input type="checkbox" name="category[]" value="{{ $category->slug }}">
+                {{ $category->name_en }}
+                <span class="count">({{ $category->products_count }})</span>
             </label>
         @endforeach
     </div>
