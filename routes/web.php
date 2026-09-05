@@ -93,3 +93,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/subcategories', [SubcategoryController::class, 'index'])->name('subcategories.index');
+
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');

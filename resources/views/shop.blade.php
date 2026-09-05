@@ -7,7 +7,7 @@
     <div class="shop-header">
         <div class="container">
             <div class="breadcrumb-custom">
-                <a href="{{ url('/') }}">Home</a> / Shop
+                <a href="{{ route('home') }}">Home</a> / Shop
             </div>
             <h1>Shop All</h1>
             <p>{{ $products->total() }} products found</p>
