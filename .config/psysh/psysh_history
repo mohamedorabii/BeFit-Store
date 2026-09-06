@@ -3,3 +3,6 @@ exit
 \App\Models\ShippingOption::create(['governorate' => 'Cairo', 'price' => 30]);
 \App\Models\ShippingOption::create(['governorate' => 'Giza', 'price' => 35]);
 exit
+\App\Models\Category::latest()->first(['id', 'name_en', 'image']);
+exitr
+exit
