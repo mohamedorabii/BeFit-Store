@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CartService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CheckoutRequest;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\ShippingOption;
+use App\Services\CartService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -28,20 +31,10 @@ class CheckoutController extends Controller
         }
 
         $subtotal = $this->cartService->calculateTotal($cartItems)['total'];
-        $shipping = $subtotal >= 100 ? 0 : 8;
-        $total = $subtotal + $shipping;
+        $shippingOptions = ShippingOption::orderBy('governorate')->get();
 
-        return view('checkout', compact('cartItems', 'subtotal', 'shipping', 'total'));
+        return view('checkout', compact('cartItems', 'subtotal', 'shippingOptions'));
     }
-
-    /**
-     * Place the order.
-     *
-     * TODO: once OrderService / Order model exist (same pattern as
-     * OrabyStore's CheckoutService), replace this with a real order
-     * creation + payment step.
-     */
-
 
     public function store(CheckoutRequest $request)
     {
@@ -53,21 +46,62 @@ class CheckoutController extends Controller
             return redirect('/cart');
         }
 
-        $orderNumber = 'BF-' . strtoupper(uniqid());
+        $shippingOption = ShippingOption::where('governorate', $validated['governorate'])->first();
 
-        $this->cartService->clearCart($this->identifier());
-
-        return redirect('/order-confirmation')->with([
-            'order_number' => $orderNumber,
-            'customer_name' => $validated['full_name'],
-        ]);
-    }
-    public function confirmation()
-    {
-        if (! session('order_number')) {
-            return redirect('/');
+        if (! $shippingOption) {
+            return back()->withErrors(['governorate' => 'Please select a valid governorate.']);
         }
 
-        return view('order-confirmation');
+        $subtotal = $this->cartService->calculateTotal($cartItems)['total'];
+        $shipping = $shippingOption->price;
+        $total = $subtotal + $shipping;
+
+        $order = DB::transaction(function () use ($validated, $cartItems, $shipping, $total) {
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'order_number' => 'BF-' . strtoupper(uniqid()),
+                'status' => 'pending',
+                'shipping_price' => $shipping,
+                'name' => $validated['full_name'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'city' => $validated['city'],
+                'governorate' => $validated['governorate'],
+                'total_price' => $total,
+            ]);
+
+            foreach ($cartItems as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'product_variant_id' => $item->variant_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->unit_price,
+                    'total_price' => $item->unit_price * $item->quantity,
+                    'color_name_en' => $item->variant->color->name_en ?? null,
+                    'color_name_ar' => $item->variant->color->name_ar ?? null,
+                    'size_name_en' => $item->variant->size->name_en ?? null,
+                    'size_name_ar' => $item->variant->size->name_ar ?? null,
+                    'variant_sku' => $item->variant->sku ?? null,
+                ]);
+            }
+
+            $this->cartService->clearCart($this->identifier());
+
+            return $order;
+        });
+
+        return redirect()->route('checkout.confirmation', $order->id);
+    }
+
+    public function confirmation(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $order->load('items');
+
+        return view('order-confirmation', compact('order'));
     }
 }

@@ -1,2 +1,5 @@
 \App\Models\Cart::whereNull('user_id')->get(['id', 'session_id', 'product_id']);
 exit
+\App\Models\ShippingOption::create(['governorate' => 'Cairo', 'price' => 30]);
+\App\Models\ShippingOption::create(['governorate' => 'Giza', 'price' => 35]);
+exit

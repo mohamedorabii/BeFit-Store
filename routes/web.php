@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
@@ -41,7 +42,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-    
+
 
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -49,19 +50,22 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::patch('/cart/update/{cart}', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::delete('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
 
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
+    Route::patch('/orders/{order}/cancel', [OrdersController::class, 'cancel'])->name('orders.cancel');
+});
 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-Route::get('/order-confirmation', [CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
-
-Route::get('/about', fn () => view('about'))->name('about');
+Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 
-Route::get('/returns', fn () => view('returns'))->name('returns');
+Route::get('/returns', fn() => view('returns'))->name('returns');
 
 Route::get('/faq', function () {
     $faqs = [

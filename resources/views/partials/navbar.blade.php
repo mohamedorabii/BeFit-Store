@@ -31,8 +31,8 @@
                         href="{{ url('/collections') }}">Collections</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}"
-                        href="{{ url('/about') }}">About</a>
+                    <a class="nav-link {{ request()->is('orders*') ? 'active' : '' }}"
+                        href="{{ url('/orders') }}">My Orders</a>
                 </li>
                 
             </ul>

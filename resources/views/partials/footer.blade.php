@@ -20,6 +20,7 @@
             <div class="col-lg-3">
                 <h4>Support</h4>
                 <ul>
+                    <li><a href="{{ url('/about') }}">About</a></li>
                     <li><a href="{{ url('/contact') }}">Contact</a></li>
                     <li><a href="{{ url('/returns') }}">Returns</a></li>
                     <li><a href="{{ url('/faq') }}">FAQ</a></li>

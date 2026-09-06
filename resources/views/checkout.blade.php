@@ -25,56 +25,46 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Full Name</label>
-                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}"
-                                    required>
+                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Phone</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}"
-                                    required>
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" required>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email') }}"
-                                    required>
+                                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Address</label>
-                                <input type="text" name="address" class="form-control" value="{{ old('address') }}"
-                                    required>
+                                <input type="text" name="address" class="form-control" value="{{ old('address') }}" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">City</label>
-                                <input type="text" name="city" class="form-control" value="{{ old('city') }}"
-                                    required>
+                                <input type="text" name="city" class="form-control" value="{{ old('city') }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Governorate</label>
+                                <select class="form-control" name="governorate" id="governorate-select" required>
+                                    <option value="" disabled {{ old('governorate') ? '' : 'selected' }}>Select Governorate</option>
+                                    @foreach ($shippingOptions as $option)
+                                        <option
+                                            value="{{ $option->governorate }}"
+                                            data-price="{{ $option->price }}"
+                                            {{ old('governorate') === $option->governorate ? 'selected' : '' }}
+                                        >
+                                            {{ $option->governorate }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('governorate')
+                                    <div class="error-message" style="color:#c0392b;font-size:0.85rem;margin-top:4px;">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
 
-                    <div class="checkout-form-block">
-                        <h4><span class="step-num">2</span> Payment Method</h4>
-
-                        <label class="payment-option">
-                            <input type="radio" name="payment_method" value="cod" checked>
-                            <div>
-                                <div class="p-label">Cash on Delivery</div>
-                                <div class="p-sub">Pay when your order arrives.</div>
-                            </div>
-                        </label>
-
-                        <label class="payment-option">
-                            <input type="radio" name="payment_method" value="card">
-                            <div>
-                                <div class="p-label">Credit / Debit Card</div>
-                                <div class="p-sub">Pay securely online (integration coming soon).</div>
-                            </div>
-                        </label>
-                    </div>
-
-                    @error('full_name')
-                        <div class="alert-success" style="background:#fdecea;color:#c0392b;border-color:#f5c6cb;">
-                            {{ $message }}</div>
-                    @enderror
+                    @error('full_name') <div class="alert-success" style="background:#fdecea;color:#c0392b;border-color:#f5c6cb;">{{ $message }}</div> @enderror
 
                 </div>
 
@@ -84,8 +74,7 @@
 
                         @foreach ($cartItems as $item)
                             <div class="checkout-mini-item">
-                                <img src="{{ $item->product->primaryImage->image ?? '' }}"
-                                    alt="{{ $item->product->name_en }}">
+                                <img src="{{ $item->product->primaryImage->image ?? '' }}" alt="{{ $item->product->name_en }}">
                                 <div>
                                     <div class="m-title">{{ $item->product->name_en }}</div>
                                     <div class="m-qty">
@@ -99,19 +88,18 @@
 
                         <div class="summary-line" style="margin-top:16px;">
                             <span>Subtotal</span>
-                            <span>${{ number_format($subtotal, 0) }}</span>
+                            <span id="subtotal-value">${{ number_format($subtotal, 2) }}</span>
                         </div>
                         <div class="summary-line">
                             <span>Shipping</span>
-                            <span>{{ $shipping === 0 ? 'Free' : '$' . $shipping }}</span>
+                            <span id="shipping-value">—</span>
                         </div>
                         <div class="summary-line summary-total">
                             <span>Total</span>
-                            <span>${{ number_format($total, 0) }}</span>
+                            <span id="total-value">${{ number_format($subtotal, 2) }}</span>
                         </div>
 
-                        <button type="submit" class="btn-main d-block w-100 text-center"
-                            style="border:none;margin-top:20px;">Place Order</button>
+                        <button type="submit" class="btn-main d-block w-100 text-center" style="border:none;margin-top:20px;">Place Order</button>
                         <a href="{{ url('/cart') }}" class="continue-shopping">← Back to Cart</a>
                     </div>
                 </div>
@@ -119,5 +107,31 @@
             </div>
         </form>
     </div>
+
+    <script>
+        (function () {
+            const subtotal = {{ $subtotal }};
+            const select = document.getElementById('governorate-select');
+            const shippingEl = document.getElementById('shipping-value');
+            const totalEl = document.getElementById('total-value');
+
+            function updateTotal() {
+                const selected = select.options[select.selectedIndex];
+                const price = parseFloat(selected?.dataset?.price ?? 'NaN');
+
+                if (isNaN(price)) {
+                    shippingEl.textContent = '—';
+                    totalEl.textContent = '$' + subtotal.toFixed(2);
+                    return;
+                }
+
+                shippingEl.textContent = '$' + price.toFixed(2);
+                totalEl.textContent = '$' + (subtotal + price).toFixed(2);
+            }
+
+            select.addEventListener('change', updateTotal);
+            updateTotal();
+        })();
+    </script>
 
 @endsection
