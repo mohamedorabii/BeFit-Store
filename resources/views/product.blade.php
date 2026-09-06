@@ -21,7 +21,7 @@
                 <div class="product-gallery-thumbs">
                     @foreach ($product->images as $i => $thumb)
                         <img src="{{ $thumb->image }}" class="{{ $i === 0 ? 'active' : '' }}"
-                             onclick="document.getElementById('mainImage').src=this.src;
+                            onclick="document.getElementById('mainImage').src=this.src;
                                       document.querySelectorAll('.product-gallery-thumbs img').forEach(t=>t.classList.remove('active'));
                                       this.classList.add('active');">
                     @endforeach
@@ -58,7 +58,8 @@
                         <div class="size-grid">
                             @foreach ($sizes as $size)
                                 <label class="size-btn" data-size-id="{{ $size->id }}">
-                                    <input type="radio" name="size_id" value="{{ $size->id }}" style="display:none;" onchange="selectSize({{ $size->id }})">
+                                    <input type="radio" name="size_id" value="{{ $size->id }}" style="display:none;"
+                                        onchange="selectSize({{ $size->id }})">
                                     {{ $size->name_en }}
                                 </label>
                             @endforeach
@@ -69,8 +70,10 @@
                         <div class="opt-title">Color</div>
                         <div class="color-grid">
                             @foreach ($colors as $color)
-                                <label class="color-dot" data-color-id="{{ $color->id }}" style="background:{{ $color->hex_code }}" title="{{ $color->name_en }}">
-                                    <input type="radio" name="color_id" value="{{ $color->id }}" style="display:none;" onchange="selectColor({{ $color->id }})">
+                                <label class="color-dot" data-color-id="{{ $color->id }}"
+                                    style="background:{{ $color->hex_code }}" title="{{ $color->name_en }}">
+                                    <input type="radio" name="color_id" value="{{ $color->id }}" style="display:none;"
+                                        onchange="selectColor({{ $color->id }})">
                                 </label>
                             @endforeach
                         </div>
@@ -80,7 +83,8 @@
 
                     <div class="qty-cart-row">
                         <div class="qty-stepper">
-                            <button type="button" onclick="const i=this.nextElementSibling; if(i.value>1) i.value--;">−</button>
+                            <button type="button"
+                                onclick="const i=this.nextElementSibling; if(i.value>1) i.value--;">−</button>
                             <input type="number" name="quantity" value="1" min="1">
                             <button type="button" onclick="this.previousElementSibling.value++;">+</button>
                         </div>
@@ -94,9 +98,12 @@
                     <input type="hidden" name="price" value="{{ $product->price }}">
                     <input type="hidden" name="image" value="{{ $mainImage->image ?? '' }}">
                     <input type="hidden" name="url" value="/product/{{ $product->slug }}">
-                    <button type="submit" class="wish-btn" title="Add to wishlist" style="width:auto;padding:0 20px;gap:8px;display:flex;align-items:center;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/>
+                    <button type="submit" class="wish-btn" title="Add to wishlist"
+                        style="width:auto;padding:0 20px;gap:8px;display:flex;align-items:center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" />
                         </svg>
                         Save to Wishlist
                     </button>
@@ -115,10 +122,12 @@
         <div class="product-tabs">
             <ul class="nav nav-tabs" id="productTab" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-description" type="button">Description</button>
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-description"
+                        type="button">Description</button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reviews" type="button">Reviews (0)</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reviews" type="button">Reviews
+                        (0)</button>
                 </li>
             </ul>
             <div class="tab-content">
@@ -143,15 +152,8 @@
             <div class="row g-4">
                 @foreach ($relatedProducts as $related)
                     <div class="col-lg-3 col-md-6">
-                        <x-product-card
-                            :badge="$related->badge"
-                            :image="$related->primaryImage->image ?? ''"
-                            :title="$related->name_en"
-                            :description="$related->description_en"
-                            :price="$related->price"
-                            :old-price="$related->old_price"
-                            :url="'/product/' . $related->slug"
-                        />
+                        <x-product-card :badge="$related->badge" :image="$related->primaryImage->image ?? ''" :title="$related->name_en" :description="$related->description_en"
+                            :price="$related->price" :old-price="$related->old_price" :url="'/product/' . $related->slug" />
                     </div>
                 @endforeach
             </div>
@@ -159,7 +161,7 @@
     </section>
 
     <script>
-      const variants = @json($variantsJson);
+        const variants = @json($variantsJson);
 
         let selectedColorId = null;
         let selectedSizeId = null;

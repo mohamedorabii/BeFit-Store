@@ -25,23 +25,28 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Full Name</label>
-                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}" required>
+                                <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Phone</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" required>
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}"
+                                    required>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                                <input type="email" name="email" class="form-control" value="{{ old('email') }}"
+                                    required>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Address</label>
-                                <input type="text" name="address" class="form-control" value="{{ old('address') }}" required>
+                                <input type="text" name="address" class="form-control" value="{{ old('address') }}"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">City</label>
-                                <input type="text" name="city" class="form-control" value="{{ old('city') }}" required>
+                                <input type="text" name="city" class="form-control" value="{{ old('city') }}"
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -66,7 +71,10 @@
                         </label>
                     </div>
 
-                    @error('full_name') <div class="alert-success" style="background:#fdecea;color:#c0392b;border-color:#f5c6cb;">{{ $message }}</div> @enderror
+                    @error('full_name')
+                        <div class="alert-success" style="background:#fdecea;color:#c0392b;border-color:#f5c6cb;">
+                            {{ $message }}</div>
+                    @enderror
 
                 </div>
 
@@ -74,14 +82,18 @@
                     <div class="checkout-summary">
                         <h4>Order Summary</h4>
 
-                        @foreach ($items as $item)
+                        @foreach ($cartItems as $item)
                             <div class="checkout-mini-item">
-                                <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}">
+                                <img src="{{ $item->product->primaryImage->image ?? '' }}"
+                                    alt="{{ $item->product->name_en }}">
                                 <div>
-                                    <div class="m-title">{{ $item['title'] }}</div>
-                                    <div class="m-qty">Qty: {{ $item['quantity'] }}</div>
+                                    <div class="m-title">{{ $item->product->name_en }}</div>
+                                    <div class="m-qty">
+                                        Qty: {{ $item->quantity }} &middot;
+                                        {{ $item->variant->size->name_en }} / {{ $item->variant->color->name_en }}
+                                    </div>
                                 </div>
-                                <div class="m-price">${{ number_format($item['price'] * $item['quantity'], 0) }}</div>
+                                <div class="m-price">${{ number_format($item->unit_price * $item->quantity, 0) }}</div>
                             </div>
                         @endforeach
 
@@ -98,7 +110,8 @@
                             <span>${{ number_format($total, 0) }}</span>
                         </div>
 
-                        <button type="submit" class="btn-main d-block w-100 text-center" style="border:none;margin-top:20px;">Place Order</button>
+                        <button type="submit" class="btn-main d-block w-100 text-center"
+                            style="border:none;margin-top:20px;">Place Order</button>
                         <a href="{{ url('/cart') }}" class="continue-shopping">← Back to Cart</a>
                     </div>
                 </div>

@@ -2,83 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Http\Requests\AddToCartRequest;
+use App\Http\Requests\UpdateCartRequest;
+use App\Models\Cart;
+use App\Services\CartService;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    /**
-     * Show the cart page.
-     *
-     * TODO: once a real Cart model / CartService exists (same pattern as
-     * OrabyStore's CartService), swap the session array below for it —
-     * the view only needs $items (array) and $subtotal (number), so the
-     * Blade file won't need to change.
-     */
+    public function __construct(protected CartService $cartService) {}
+
+    private function identifier(): array
+    {
+        return $this->cartService->getIdentifier(
+            Auth::check() ? Auth::id() : null,
+            session()->getId()
+        );
+    }
+
     public function index()
     {
-        $items = session('cart', []);
-        $subtotal = collect($items)->sum(fn ($item) => $item['price'] * $item['quantity']);
+        $cartItems = $this->cartService->getCartItems($this->identifier());
+        $totals = $this->cartService->calculateTotal($cartItems);
 
-        return view('cart', compact('items', 'subtotal'));
+        return view('cart', array_merge(compact('cartItems'), $totals));
     }
 
-    public function add(Request $request)
+    public function add(AddToCartRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'nullable|string',
-            'url' => 'nullable|string',
-            'quantity' => 'nullable|integer|min:1',
-            'size' => 'nullable|string',
-            'color' => 'nullable|string',
-        ]);
+        $added = $this->cartService->addToCart(
+            $this->identifier(),
+            $request->product_id,
+            $request->quantity ?? 1,
+            $request->variant_id
+        );
 
-        $cart = session('cart', []);
-
-        // Same product + size + color combo bumps quantity instead of duplicating the row.
-        $key = Str::slug($validated['title'] . '-' . ($validated['size'] ?? '') . '-' . ($validated['color'] ?? ''));
-
-        if (isset($cart[$key])) {
-            $cart[$key]['quantity'] += $validated['quantity'] ?? 1;
-        } else {
-            $cart[$key] = [
-                'title' => $validated['title'],
-                'price' => $validated['price'],
-                'image' => $validated['image'] ?? '',
-                'url' => $validated['url'] ?? '#',
-                'size' => $validated['size'] ?? null,
-                'color' => $validated['color'] ?? null,
-                'quantity' => $validated['quantity'] ?? 1,
-            ];
+        if (! $added) {
+            return back()->withErrors([
+                'quantity' => 'The requested quantity exceeds the available stock.',
+            ]);
         }
 
-        session(['cart' => $cart]);
-
-        return back()->with('success', $validated['title'] . ' added to cart.');
+        return redirect()->route('cart')
+            ->with('success', 'Product added to cart successfully.');
     }
 
-    public function updateQuantity(Request $request, string $key)
+    public function updateQuantity(UpdateCartRequest $request, Cart $cart)
     {
-        $validated = $request->validate(['quantity' => 'required|integer|min:1']);
+        $updated = $this->cartService->updateCart(
+            $cart,
+            $request->quantity,
+            Auth::id(),
+            session()->getId()
+        );
 
-        $cart = session('cart', []);
-
-        if (isset($cart[$key])) {
-            $cart[$key]['quantity'] = $validated['quantity'];
-            session(['cart' => $cart]);
+        if (! $updated) {
+            return back()->withErrors([
+                'quantity' => 'The requested quantity is not available.',
+            ]);
         }
 
-        return back();
+        return redirect()->route('cart')
+            ->with('success', 'Cart updated successfully.');
     }
 
-    public function remove(string $key)
+    public function remove(Cart $cart)
     {
-        $cart = session('cart', []);
-        unset($cart[$key]);
-        session(['cart' => $cart]);
+        $this->cartService->removeFromCart($cart, Auth::id());
 
-        return back()->with('success', 'Item removed from cart.');
+        return redirect()->route('cart')->with('success', 'Product removed from cart successfully.');
     }
 }

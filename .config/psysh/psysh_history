@@ -1,0 +1,2 @@
+\App\Models\Cart::whereNull('user_id')->get(['id', 'session_id', 'product_id']);
+exit

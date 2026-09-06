@@ -46,8 +46,10 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::patch('/cart/update/{key}', [CartController::class, 'updateQuantity'])->name('cart.update');
-Route::delete('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
+Route::patch('/cart/update/{cart}', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::delete('/cart/remove/{cart}', [CartController::class, 'remove'])->name('cart.remove');
+
+
 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
