@@ -87,7 +87,20 @@ class ProductForm
                 Repeater::make('images')
                     ->relationship()
                     ->label('Gallery Images')
+                    ->live()
                     ->defaultItems(0)
+                    ->afterStateUpdated(function (?array $state, Set $set) {
+                        if (empty($state)) {
+                            return;
+                        }
+
+                        $hasPrimary = collect($state)->contains(fn($item) => (bool) ($item['is_primary'] ?? false));
+
+                        if (! $hasPrimary) {
+                            $firstKey = array_key_first($state);
+                            $set("images.{$firstKey}.is_primary", true);
+                        }
+                    })
                     ->schema([
                         FileUpload::make('image')
                             ->label('Image')
@@ -100,18 +113,22 @@ class ProductForm
                             ->label('Primary')
                             ->live()
                             ->afterStateUpdated(function (bool $state, Set $set, Get $get) {
-                                if (! $state) {
+                                $siblings = $get('../') ?? [];
+
+                                if ($state) {
+                                    foreach (array_keys($siblings) as $key) {
+                                        $set("../{$key}.is_primary", false);
+                                    }
+                                    $set('is_primary', true);
                                     return;
                                 }
 
+                                $hasAnyPrimary = collect($siblings)
+                                    ->contains(fn($item) => (bool) ($item['is_primary'] ?? false));
 
-                                $siblings = $get('../') ?? [];
-
-                                foreach (array_keys($siblings) as $key) {
-                                    $set("../{$key}.is_primary", false);
+                                if (! $hasAnyPrimary) {
+                                    $set('is_primary', true);
                                 }
-
-                                $set('is_primary', true);
                             }),
 
                         TextInput::make('sort_order')
