@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -31,6 +32,20 @@ class Product extends Model
         'price' => 'decimal:2',
         'old_price' => 'decimal:2',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Product $product) {
+            foreach ($product->images as $productImage) {
+                if (
+                    $productImage->image
+                    && Storage::disk('public')->exists($productImage->image)
+                ) {
+                    Storage::disk('public')->delete($productImage->image);
+                }
+            }
+        });
+    }
 
     public function category(): BelongsTo
     {

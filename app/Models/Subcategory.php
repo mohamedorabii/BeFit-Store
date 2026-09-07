@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Subcategory extends Model
 {
@@ -25,6 +26,25 @@ class Subcategory extends Model
         'status' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Subcategory $subcategory) {
+            if (! $subcategory->image) {
+                $subcategory->image = 'subcategories/default.png';
+            }
+        });
+
+        static::deleting(function (Subcategory $subcategory) {
+            if (
+                $subcategory->image
+                && $subcategory->image !== 'subcategories/default.png'
+                && Storage::disk('public')->exists($subcategory->image)
+            ) {
+                Storage::disk('public')->delete($subcategory->image);
+            }
+        });
+    }
 
     public function category(): BelongsTo
     {

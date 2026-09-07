@@ -14,16 +14,21 @@
 
             {{-- Gallery --}}
             <div class="col-lg-6">
-                @php $mainImage = $product->images->firstWhere('is_primary', true) ?? $product->images->first(); @endphp
+                @php
+                    $mainImage = $product->images->firstWhere('is_primary', true) ?? $product->images->first();
+                    $resolveImg = fn($path) => $path && !str_starts_with($path, 'http')
+                        ? asset('storage/' . ltrim($path, '/'))
+                        : $path;
+                @endphp
                 <div class="product-gallery-main">
-                    <img src="{{ $mainImage->image ?? '' }}" alt="{{ $product->name_en }}" id="mainImage">
+                    <img src="{{ $resolveImg($mainImage->image ?? '') }}" alt="{{ $product->name_en }}" id="mainImage">
                 </div>
                 <div class="product-gallery-thumbs">
                     @foreach ($product->images as $i => $thumb)
-                        <img src="{{ $thumb->image }}" class="{{ $i === 0 ? 'active' : '' }}"
+                        <img src="{{ $resolveImg($thumb->image) }}" class="{{ $i === 0 ? 'active' : '' }}"
                             onclick="document.getElementById('mainImage').src=this.src;
-                                      document.querySelectorAll('.product-gallery-thumbs img').forEach(t=>t.classList.remove('active'));
-                                      this.classList.add('active');">
+                          document.querySelectorAll('.product-gallery-thumbs img').forEach(t=>t.classList.remove('active'));
+                          this.classList.add('active');">
                     @endforeach
                 </div>
             </div>
@@ -96,7 +101,7 @@
                     @csrf
                     <input type="hidden" name="title" value="{{ $product->name_en }}">
                     <input type="hidden" name="price" value="{{ $product->price }}">
-                    <input type="hidden" name="image" value="{{ $mainImage->image ?? '' }}">
+                    <input type="hidden" name="image" value="{{ $resolveImg($mainImage->image ?? '') }}">
                     <input type="hidden" name="url" value="/product/{{ $product->slug }}">
                     <button type="submit" class="wish-btn" title="Add to wishlist"
                         style="width:auto;padding:0 20px;gap:8px;display:flex;align-items:center;">
