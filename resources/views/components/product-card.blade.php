@@ -31,14 +31,7 @@
                 <del>${{ number_format($oldPrice, 0) }}</del>
             @endif
         </div>
-        <form action="{{ url('/cart/add') }}" method="POST">
-            @csrf
-            <input type="hidden" name="url" value="{{ $url }}">
-            <input type="hidden" name="title" value="{{ $title }}">
-            <input type="hidden" name="price" value="{{ $price }}">
-            <input type="hidden" name="image" value="{{ $resolvedImage }}">
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="add-cart">Add To Cart</button>
-        </form>
+
+        <a href="{{ url($url) }}" class="add-cart">Add To Cart</a>
     </div>
 </div>

@@ -20,7 +20,7 @@ class ColorResource extends Resource
 {
     protected static ?string $model = Color::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-swatch';
 
     protected static ?string $recordTitleAttribute = 'name_en';
 

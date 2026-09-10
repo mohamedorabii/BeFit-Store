@@ -40,7 +40,7 @@
                         @foreach ($cartItems as $item)
                             <div class="cart-row">
                                 <a href="{{ url('/product/' . $item->product->slug) }}" class="cart-thumb">
-                                    <img src="{{ $item->product->primaryImage->image ?? '' }}" alt="{{ $item->product->name_en }}" width="90" height="90">
+                                    <img src="{{ $item->product->primaryImage?->image ? asset('storage/' . $item->product->primaryImage->image) : asset('storage/products/default.png') }}" alt="{{ $item->product->name_en }}" width="90" height="90">
                                 </a>
 
                                 <div class="cart-row-info">
