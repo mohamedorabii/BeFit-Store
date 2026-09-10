@@ -2,41 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use App\Http\Requests\WishlistAddRequest;
+use App\Services\WishlistService;
 
 class WishlistController extends Controller
 {
+    public function __construct(protected WishlistService $wishlistService) {}
+
     public function index()
     {
-        $items = session('wishlist', []);
+        $items = $this->wishlistService->getItems();
 
         return view('wishlist', compact('items'));
     }
 
-    public function add(Request $request)
+    public function add(WishlistAddRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'nullable|string',
-            'url' => 'nullable|string',
-        ]);
+        $item = $this->wishlistService->add($request->validated());
 
-        $wishlist = session('wishlist', []);
-        $key = Str::slug($validated['title']);
-
-        $wishlist[$key] = $validated;
-        session(['wishlist' => $wishlist]);
-
-        return back()->with('success', $validated['title'] . ' added to wishlist.');
+        return back()->with('success', $item['title'] . ' added to wishlist.');
     }
 
     public function remove(string $key)
     {
-        $wishlist = session('wishlist', []);
-        unset($wishlist[$key]);
-        session(['wishlist' => $wishlist]);
+        $this->wishlistService->remove($key);
 
         return back()->with('success', 'Item removed from wishlist.');
     }
