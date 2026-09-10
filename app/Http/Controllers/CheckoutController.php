@@ -38,6 +38,7 @@ class CheckoutController extends Controller
         return view('checkout', compact('cartItems', 'subtotal', 'shippingOptions'));
     }
 
+
     public function store(CheckoutRequest $request)
     {
         $validated = $request->validated();
@@ -56,13 +57,17 @@ class CheckoutController extends Controller
 
         $subtotal = $this->cartService->calculateTotal($cartItems)['total'];
 
-        $order = $this->checkoutService->createFromCart(
-            $validated,
-            $cartItems,
-            $shippingOption,
-            Auth::id(),
-            $subtotal,
-        );
+        try {
+            $order = $this->checkoutService->createFromCart(
+                $validated,
+                $cartItems,
+                $shippingOption,
+                Auth::id(),
+                $subtotal,
+            );
+        } catch (\Exception $e) {
+            return redirect('/cart')->with('error', $e->getMessage());
+        }
 
         $this->cartService->clearCart($this->identifier());
 

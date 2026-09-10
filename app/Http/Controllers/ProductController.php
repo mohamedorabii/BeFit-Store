@@ -2,39 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
+    public function __construct(protected ProductService $productService) {}
+
     public function show(string $slug)
     {
-        $product = Product::with([
-            'images' => fn ($query) => $query->orderBy('sort_order'),
-            'variants.color',
-            'variants.size',
-            'category',
-        ])
-            ->where('slug', $slug)
-            ->where('status', true)
-            ->firstOrFail();
+        $product = $this->productService->findBySlug($slug);
 
-        $sizes = $product->variants->pluck('size')->unique('id')->values();
-        $colors = $product->variants->pluck('color')->unique('id')->values();
-
-        $relatedProducts = Product::with('primaryImage')
-            ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->where('status', true)
-            ->take(4)
-            ->get();
-
-        $variantsJson = $product->variants->map(fn ($v) => [
-            'id' => $v->id,
-            'color_id' => $v->color_id,
-            'size_id' => $v->size_id,
-            'stock' => $v->stock,
-            'sku' => $v->sku,
-        ])->values();
+        $sizes = $this->productService->getSizes($product);
+        $colors = $this->productService->getColors($product);
+        $relatedProducts = $this->productService->getRelated($product);
+        $variantsJson = $this->productService->getVariantsJson($product);
 
         return view('product', compact('product', 'sizes', 'colors', 'relatedProducts', 'variantsJson'));
     }

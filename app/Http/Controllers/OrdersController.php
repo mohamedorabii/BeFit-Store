@@ -3,33 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\OrderService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class OrdersController extends Controller
 {
+    public function __construct(protected OrderService $orderService) {}
+
     public function index(): View
     {
-        $orders = Order::where('user_id', Auth::id())
-            ->with('items.product')
-            ->latest()
-            ->get();
+        $orders = $this->orderService->getUserOrders(Auth::id());
 
         return view('orders', compact('orders'));
     }
 
     public function cancel(Order $order): RedirectResponse
     {
-        if ($order->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $cancelled = $this->orderService->cancel($order, Auth::id());
 
-        if ($order->status !== 'pending') {
+        if (! $cancelled) {
             return back()->with('error', 'This order can no longer be cancelled.');
         }
-
-        $order->update(['status' => 'cancelled']);
 
         return back()->with('success', 'Order cancelled successfully.');
     }
