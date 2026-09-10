@@ -15,7 +15,12 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:11', 'unique:users,phone,'.$this->user()->id],
+            'phone' => [
+                'nullable',
+                'string',
+                'regex:/^01[0125][0-9]{8}$/',
+                'unique:users,phone,' . $this->user()->id,
+            ],
         ];
     }
 }
