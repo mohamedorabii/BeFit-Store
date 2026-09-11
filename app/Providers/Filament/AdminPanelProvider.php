@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->authGuard('admin')
+            ->brandName('BeFit')
             ->colors([
                 'primary' => Color::Amber,
             ])
