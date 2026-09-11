@@ -1736,3 +1736,31 @@ footer a:hover {
         padding: 30px;
     }
 }
+.nav-search-wrapper { display: inline-block; }
+.nav-search-box {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 280px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    padding: 10px;
+    z-index: 1000;
+}
+.nav-search-box input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+.search-results-dropdown { margin-top: 8px; max-height: 300px; overflow-y: auto; }
+.search-result-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 6px 4px; text-decoration: none; color: inherit;
+}
+.search-result-item img { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }
+.search-result-item .sr-title { font-size: .9rem; font-weight: 600; }
+.search-result-item .sr-price { font-size: .85rem; color: #666; }
+.search-no-results { padding: 8px; color: #888; font-size: .9rem; }

@@ -40,7 +40,14 @@
             </ul>
 
             <div class="nav-icons">
-                <i class="fa-solid fa-magnifying-glass" title="Search"></i>
+                <div class="nav-search-wrapper position-relative">
+    <i class="fa-solid fa-magnifying-glass" id="searchToggle" title="Search" role="button"></i>
+
+    <div id="searchBox" class="nav-search-box" style="display:none;">
+        <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
+        <div id="searchResults" class="search-results-dropdown"></div>
+    </div>
+</div>
                 <a href="{{ url('/wishlist') }}"><i class="fa-regular fa-heart" title="Wishlist"></i></a>
                
                 @auth
@@ -61,4 +68,60 @@
 
         </div>
     </div>
+    <script>
+(function () {
+    const toggle = document.getElementById('searchToggle');
+    const box = document.getElementById('searchBox');
+    const input = document.getElementById('searchInput');
+    const resultsBox = document.getElementById('searchResults');
+    let debounceTimer = null;
+
+    toggle.addEventListener('click', () => {
+        const isHidden = box.style.display === 'none' || !box.style.display;
+        box.style.display = isHidden ? 'block' : 'none';
+        if (isHidden) input.focus();
+    });
+
+    input.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        const query = input.value.trim();
+
+        if (query.length < 2) {
+            resultsBox.innerHTML = '';
+            resultsBox.style.display = 'none';
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetch(`/search/products?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(items => {
+                    if (items.length === 0) {
+                        resultsBox.innerHTML = '<div class="search-no-results">No products found.</div>';
+                    } else {
+                        resultsBox.innerHTML = items.map(item => {
+                            const name = document.createElement('div');
+                            name.textContent = item.name;
+                            return `
+                                <a href="${item.url}" class="search-result-item">
+                                    <img src="${item.image}" alt="${name.textContent.replace(/"/g, '&quot;')}">
+                                    <div>
+                                        <div class="sr-title">${name.innerHTML}</div>
+                                        <div class="sr-price">$${item.price}</div>
+                                    </div>
+                                </a>`;
+                        }).join('');
+                    }
+                    resultsBox.style.display = 'block';
+                });
+        }, 300);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!box.contains(e.target) && e.target !== toggle) {
+            box.style.display = 'none';
+        }
+    });
+})();
+</script>
 </nav>

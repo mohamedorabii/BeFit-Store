@@ -17,6 +17,8 @@ use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
+
 
 
 /*
@@ -235,3 +237,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/verify-otp/verify', [OtpController::class, 'verify'])
         ->name('otp.verify');
 });
+
+// routes/web.php — ضيفه جوه قسم Public Storefront Routes
+
+
+Route::get('/search/products', [SearchController::class, 'products'])->name('search.products');

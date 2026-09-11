@@ -10,7 +10,7 @@ class ProductService
     public function findBySlug(string $slug): Product
     {
         return Product::with([
-            'images' => fn ($query) => $query->orderBy('sort_order'),
+            'images' => fn($query) => $query->orderBy('sort_order'),
             'variants.color',
             'variants.size',
             'category',
@@ -42,12 +42,26 @@ class ProductService
 
     public function getVariantsJson(Product $product): Collection
     {
-        return $product->variants->map(fn ($v) => [
+        return $product->variants->map(fn($v) => [
             'id' => $v->id,
             'color_id' => $v->color_id,
             'size_id' => $v->size_id,
             'stock' => $v->stock,
             'sku' => $v->sku,
         ])->values();
+    }
+
+
+    public function search(string $query, int $limit = 6): Collection
+    {
+        return Product::query()
+            ->where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('name_en', 'like', "%{$query}%")
+                    ->orWhere('name_ar', 'like', "%{$query}%");
+            })
+            ->with('primaryImage')
+            ->limit($limit)
+            ->get();
     }
 }

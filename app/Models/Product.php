@@ -71,4 +71,16 @@ class Product extends Model
     {
         return $this->hasOne(ProductImage::class)->where('is_primary', true);
     }
+    public function getPrimaryImageUrlAttribute(): string
+{
+    $image = $this->primaryImage->image ?? null;
+
+    if (! $image) {
+        return asset('images/placeholder.png');
+    }
+
+    return str_starts_with($image, 'http')
+        ? $image
+        : asset('storage/' . ltrim($image, '/'));
+}
 }
