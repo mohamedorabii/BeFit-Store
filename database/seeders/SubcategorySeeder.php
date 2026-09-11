@@ -13,26 +13,26 @@ class SubcategorySeeder extends Seeder
     {
         $subcategories = [
             'men' => [
-                ['name_en' => 'T-Shirts', 'name_ar' => 'تيشيرتات', 'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Hoodies', 'name_ar' => 'هوديز', 'image' => 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Jackets', 'name_ar' => 'جاكيتات', 'image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=900&auto=format&fit=crop'],
+                ['name_en' => 'T-Shirts', 'name_ar' => 'تيشيرتات', 'image' => 'subcategories/01M26XE3XEC8X0M9SP8FF13619.jpg'],
+                ['name_en' => 'Hoodies', 'name_ar' => 'هوديز', 'image' => 'subcategories/01M26XE4723NY3S69V4S7YQ8S9.jpg'],
+                ['name_en' => 'Jackets', 'name_ar' => 'جاكيتات', 'image' => 'subcategories/01M26XE4EQ8YW1QX1WMZFQJP3F.jpg'],
             ],
             'women' => [
-                ['name_en' => 'Leggings', 'name_ar' => 'ليجنز', 'image' => 'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Sports Bras', 'name_ar' => 'حمالات رياضية', 'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Jackets', 'name_ar' => 'جاكيتات', 'image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=900&auto=format&fit=crop'],
+                ['name_en' => 'Leggings', 'name_ar' => 'ليجنز', 'image' => 'subcategories/01M26XE4PQWQVBZ4RCP1FAFDJ5.jpg'],
+                ['name_en' => 'Sports Bras', 'name_ar' => 'حمالات رياضية', 'image' => 'categories/01M26XE2AWCWM6BTG6W17AT2VP.jpg'],
+                ['name_en' => 'Jackets', 'name_ar' => 'جاكيتات', 'image' => 'subcategories/01M26XE4EQ8YW1QX1WMZFQJP3F.jpg'],
             ],
             'shoes' => [
-                ['name_en' => 'Sneakers', 'name_ar' => 'سنيكرز', 'image' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Running Shoes', 'name_ar' => 'أحذية جري', 'image' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop'],
+                ['name_en' => 'Sneakers', 'name_ar' => 'سنيكرز', 'image' => 'categories/01M26XE2FXA8DPYJZV9SCAR7DM.jpg'],
+                ['name_en' => 'Running Shoes', 'name_ar' => 'أحذية جري', 'image' => 'categories/01M26XE2FXA8DPYJZV9SCAR7DM.jpg'],
             ],
             'accessories' => [
-                ['name_en' => 'Bags', 'name_ar' => 'شنط', 'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Caps', 'name_ar' => 'كابات', 'image' => 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=900&auto=format&fit=crop'],
+                ['name_en' => 'Bags', 'name_ar' => 'شنط', 'image' => 'categories/01M26XE3GXBZMZHJ4SYTHJB3GZ.jpg'],
+                ['name_en' => 'Caps', 'name_ar' => 'كابات', 'image' => 'categories/01M26XE2X3WCYR0458FSTK16W3.jpg'],
             ],
             'outerwear' => [
-                ['name_en' => 'Jackets', 'name_ar' => 'جاكيتات', 'image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=900&auto=format&fit=crop'],
-                ['name_en' => 'Coats', 'name_ar' => 'معاطف', 'image' => 'https://images.unsplash.com/photo-1509942774463-acf339cf87d5?q=80&w=900&auto=format&fit=crop'],
+                ['name_en' => 'Jackets', 'name_ar' => 'جاكيتات', 'image' => 'subcategories/01M26XE4EQ8YW1QX1WMZFQJP3F.jpg'],
+                ['name_en' => 'Coats', 'name_ar' => 'معاطف', 'image' => 'categories/01M26XE2NXW1Q49AY9J6JFNE86.jpg'],
             ],
         ];
 

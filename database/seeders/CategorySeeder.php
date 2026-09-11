@@ -14,52 +14,52 @@ class CategorySeeder extends Seeder
             [
                 'name_en' => 'Men',
                 'name_ar' => 'رجالي',
-                'image' => 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE22D3X5GV9AHZ7AQK2MX.jpg',
             ],
             [
                 'name_en' => 'Women',
                 'name_ar' => 'حريمي',
-                'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2AWCWM6BTG6W17AT2VP.jpg',
             ],
             [
                 'name_en' => 'Shoes',
                 'name_ar' => 'أحذية',
-                'image' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2FXA8DPYJZV9SCAR7DM.jpg',
             ],
             [
                 'name_en' => 'Accessories',
                 'name_ar' => 'إكسسوارات',
-                'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2AWCWM6BTG6W17AT2VP.jpg',
             ],
             [
                 'name_en' => 'Outerwear',
                 'name_ar' => 'ملابس خارجية',
-                'image' => 'https://images.unsplash.com/photo-1509942774463-acf339cf87d5?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2NXW1Q49AY9J6JFNE86.jpg',
             ],
             [
                 'name_en' => 'New Arrivals',
                 'name_ar' => 'وصل حديثاً',
-                'image' => 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2X3WCYR0458FSTK16W3.jpg',
             ],
             [
                 'name_en' => 'Sportswear',
                 'name_ar' => 'ملابس رياضية',
-                'image' => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE33P2JP6FSZQM1X7D2KV.jpg',
             ],
             [
                 'name_en' => 'Kids',
                 'name_ar' => 'أطفال',
-                'image' => 'https://images.unsplash.com/photo-1503919545889-aef636e10ad4?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE38VK783DRCXTJ92BM41.jpg',
             ],
             [
                 'name_en' => 'Bags',
                 'name_ar' => 'شنط',
-                'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE3GXBZMZHJ4SYTHJB3GZ.jpg',
             ],
             [
                 'name_en' => 'Fitness Gear',
                 'name_ar' => 'معدات لياقة',
-                'image' => 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE3PYRVGGJS7ZSA6YG2AE.jpg',
             ],
         ];
 

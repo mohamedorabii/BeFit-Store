@@ -26,7 +26,7 @@ class ProductSeeder extends Seeder
                 'price' => 450,
                 'old_price' => 550,
                 'badge' => 'Sale',
-                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop',
+                'image' => 'subcategories/01M26XE3XEC8X0M9SP8FF13619.jpg',
             ],
             [
                 'category' => 'men',
@@ -36,7 +36,7 @@ class ProductSeeder extends Seeder
                 'price' => 780,
                 'old_price' => null,
                 'badge' => 'New',
-                'image' => 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=900&auto=format&fit=crop',
+                'image' => 'subcategories/01M26XE4723NY3S69V4S7YQ8S9.jpg',
             ],
             [
                 'category' => 'women',
@@ -46,7 +46,7 @@ class ProductSeeder extends Seeder
                 'price' => 520,
                 'old_price' => null,
                 'badge' => null,
-                'image' => 'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=900&auto=format&fit=crop',
+                'image' => 'subcategories/01M26XE4PQWQVBZ4RCP1FAFDJ5.jpg',
             ],
             [
                 'category' => 'women',
@@ -56,7 +56,7 @@ class ProductSeeder extends Seeder
                 'price' => 380,
                 'old_price' => 420,
                 'badge' => 'Sale',
-                'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2AWCWM6BTG6W17AT2VP.jpg',
             ],
             [
                 'category' => 'shoes',
@@ -66,7 +66,7 @@ class ProductSeeder extends Seeder
                 'price' => 1250,
                 'old_price' => null,
                 'badge' => 'Best Seller',
-                'image' => 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE2FXA8DPYJZV9SCAR7DM.jpg',
             ],
             [
                 'category' => 'outerwear',
@@ -76,7 +76,7 @@ class ProductSeeder extends Seeder
                 'price' => 950,
                 'old_price' => null,
                 'badge' => 'New',
-                'image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=900&auto=format&fit=crop',
+                'image' => 'subcategories/01M26XE4EQ8YW1QX1WMZFQJP3F.jpg',
             ],
             [
                 'category' => 'women',
@@ -86,7 +86,7 @@ class ProductSeeder extends Seeder
                 'price' => 495,
                 'old_price' => 600,
                 'badge' => 'Sale',
-                'image' => 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=900&auto=format&fit=crop',
+                'image' => 'products/gallery/01M26XE4X6H3VMJPNRHV3Z22VC.jpg',
             ],
             [
                 'category' => 'accessories',
@@ -96,7 +96,7 @@ class ProductSeeder extends Seeder
                 'price' => 190,
                 'old_price' => null,
                 'badge' => null,
-                'image' => 'https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=900&auto=format&fit=crop',
+                'image' => 'products/gallery/01M26XE55EVM5EGF7Z3BF3KZPT.jpg',
             ],
             [
                 'category' => 'accessories',
@@ -106,7 +106,7 @@ class ProductSeeder extends Seeder
                 'price' => 490,
                 'old_price' => null,
                 'badge' => 'New',
-                'image' => 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=900&auto=format&fit=crop',
+                'image' => 'categories/01M26XE3GXBZMZHJ4SYTHJB3GZ.jpg',
             ],
             [
                 'category' => 'men',
@@ -116,7 +116,7 @@ class ProductSeeder extends Seeder
                 'price' => 250,
                 'old_price' => 350,
                 'badge' => 'Sale',
-                'image' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?q=80&w=900&auto=format&fit=crop',
+                'image' => 'products/gallery/01M26XE5AHBPD255EENVAW5YYQ.jpg',
             ],
             [
                 'category' => 'shoes',
@@ -126,7 +126,7 @@ class ProductSeeder extends Seeder
                 'price' => 1350,
                 'old_price' => 1600,
                 'badge' => 'Sale',
-                'image' => 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=900&auto=format&fit=crop',
+                'image' => 'products/gallery/01M26XE5GVQYKMFS74E9EZ2V8M.jpg',
             ],
             [
                 'category' => 'outerwear',
@@ -136,7 +136,7 @@ class ProductSeeder extends Seeder
                 'price' => 1450,
                 'old_price' => null,
                 'badge' => 'New',
-                'image' => 'https://images.unsplash.com/photo-1544923246-77307dd654cb?q=80&w=900&auto=format&fit=crop',
+                'image' => 'products/gallery/01M26XE5Q67211N3BQPDQT6B5S.jpg',
             ],
         ];
 

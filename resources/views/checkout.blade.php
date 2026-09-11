@@ -74,7 +74,13 @@
 
                         @foreach ($cartItems as $item)
                             <div class="checkout-mini-item">
-                                <img src="{{ $item->product->primaryImage->image ?? '' }}" alt="{{ $item->product->name_en }}">
+                                @php
+    $itemImage = $item->product->primaryImage->image ?? null;
+    $itemImageUrl = $itemImage
+        ? (str_starts_with($itemImage, 'http') ? $itemImage : asset('storage/' . ltrim($itemImage, '/')))
+        : asset('images/placeholder.png');
+@endphp
+<img src="{{ $itemImageUrl }}" alt="{{ $item->product->name_en }}">
                                 <div>
                                     <div class="m-title">{{ $item->product->name_en }}</div>
                                     <div class="m-qty">

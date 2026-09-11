@@ -42,11 +42,7 @@
             <div class="nav-icons">
                 <i class="fa-solid fa-magnifying-glass" title="Search"></i>
                 <a href="{{ url('/wishlist') }}"><i class="fa-regular fa-heart" title="Wishlist"></i></a>
-                @auth('admin')
-                    <a href="{{ url('/admin') }}" class="admin-dashboard-link" title="Admin Dashboard">
-                        <i class="fa-solid fa-gauge-high"></i>
-                    </a>
-                @endauth
+               
                 @auth
                     <a href="{{ route('profile.edit') }}" title="My profile">
                         <i class="fa-solid fa-user"></i>
