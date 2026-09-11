@@ -1,88 +1,657 @@
-# BeFit Store
+# 🏋️ BeFit Store
 
-BeFit Store is a Laravel-based sportswear e-commerce application designed for selling athletic apparel, accessories, and gear. The project includes a storefront for browsing and purchasing products, a wishlist and cart flow, order processing, and a Filament-powered admin dashboard for managing the catalog and store operations.
+A full-stack sportswear e-commerce platform built with **Laravel 12**, designed for selling athletic apparel, sportswear, and related products.
 
-The codebase is implemented as a server-rendered web application using Laravel, Blade, Bootstrap, and Vite. It is organized around a typical MVC architecture with service classes, request validation, and Eloquent models for the main e-commerce entities.
+BeFit provides a complete **server-rendered web storefront** built with Laravel Blade, together with a **Filament-powered admin dashboard** for managing products, categories, variants, users, orders, shipping options, and other store operations.
+
+The project follows a clean Laravel architecture with **Controllers, Form Requests, Services, Eloquent Models, and Filament Resources**, keeping business logic organized and maintainable.
+
+---
 
 ## ✨ Features
 
-- Product catalog with category and subcategory browsing
-- Product detail pages with gallery images and variant selection
-- Color and size variants with stock handling
-- Shop filters by category, subcategory, size, color, and price range
-- Search suggestions for products
-- Shopping cart with guest and authenticated user support
-- Wishlist for saving products
-- Checkout flow with shipping options and order creation
-- Order listing and cancellation for pending orders
-- User authentication using Laravel’s built-in web auth system
-- Email OTP verification for newly registered users
-- Password reset flow using OTP codes
-- Social login with Google via Laravel Socialite
-- Admin dashboard with Filament for catalog and store management
-- Soft-deleted records for products and categories when managed through admin flows
-- Product image handling through the public storage disk
+### 🛍️ Shopping Experience
 
-## 🛠️ Tech Stack
+* Browse products by category and subcategory
+* Product listing with filtering
+* Product search suggestions
+* Product details page
+* Multiple product images
+* Product image gallery
+* Product variants
+* Color and size selection
+* Variant-specific stock management
+* Variant-specific pricing support
+* Product badges and availability
+* Related product browsing
+* Responsive sportswear storefront
 
-| Layer | Technology |
-| --- | --- |
-| Backend | PHP 8.2, Laravel 12 |
-| Frontend | Blade templates, Bootstrap 5, custom CSS/JS |
-| Build tooling | Vite |
-| Admin panel | Filament 5 |
-| Authentication | Laravel auth, Laravel Socialite, OTP-based flows |
-| Database | MySQL (Dockerized), SQLite supported by default in example env |
-| Queue / background | Laravel queue support with database queue connection |
-| Infrastructure | Docker Compose |
-| Testing | PHPUnit |
-| Mail testing | Mailpit |
-| Search / additional services | Meilisearch, Redis included in Docker stack |
+### 🎨 Product Variants
+
+BeFit supports product variants based on:
+
+* Colors
+* Sizes
+* Stock quantity
+* SKU
+* Variant pricing
+
+Each product can have multiple combinations of colors and sizes, allowing the store to manage inventory at the variant level.
+
+---
+
+### 👤 Authentication
+
+* User registration
+* User login
+* User logout
+* Email OTP verification
+* 6-digit OTP verification
+* OTP resend functionality
+* OTP-based password reset
+* Google OAuth login
+* Session-based authentication
+* Separate admin authentication through Filament
+
+---
+
+### 🛒 Cart
+
+* Guest shopping cart
+* Authenticated user cart
+* Add products to cart
+* Update quantities
+* Remove cart items
+* Clear cart
+* Variant-aware cart items
+* Stock validation
+* Product availability validation
+
+---
+
+### ❤️ Wishlist
+
+* Add products to wishlist
+* Remove products from wishlist
+* Save products for later
+* Wishlist integration with the storefront
+
+---
+
+### 💳 Checkout & Orders
+
+* Checkout process
+* Customer shipping information
+* Governorate-based shipping options
+* Shipping price calculation
+* Order creation
+* Order items with selected variants
+* Order history
+* Order details
+* Pending order cancellation
+* Stock handling during order cancellation
+
+> Payment gateway integration can be added later as part of the project's future development.
+
+---
+
+## 🖥️ Admin Panel
+
+BeFit includes a dedicated **Filament Admin Dashboard** for managing the store.
+
+### Admin Features
+
+* Product management
+* Category management
+* Subcategory management
+* User management
+* Order management
+* Color management
+* Size management
+* Shipping option management
+* Product image management
+* Product variant management
+* Stock management
+* Product availability management
+
+The admin dashboard provides CRUD interfaces for the main e-commerce entities and allows administrators to manage the store without directly interacting with the database.
+
+Admin panel:
+
+```text
+/admin
+```
+
+---
 
 ## 🏗️ Architecture
 
-The application follows a practical Laravel architecture with a clear separation between the request layer, business logic, and persistence layer.
+BeFit follows a practical Laravel architecture based on separation of responsibilities.
 
-- Routes are defined in [routes/web.php](routes/web.php) and are grouped into public storefront routes, cart/wishlist flows, authenticated checkout flows, and auth-related routes.
-- Controllers in [app/Http/Controllers](app/Http/Controllers) handle HTTP requests and delegate business operations to service classes.
-- Services in [app/Services](app/Services) encapsulate the main domain logic for home page data, filtering products, checkout, orders, OTP, wishlist, and social authentication.
-- Form requests in [app/Http/Requests](app/Http/Requests) validate incoming payloads for cart updates, checkout, profile updates, wishlist items, and OTP verification.
-- Models in [app/Models](app/Models) represent the main entities such as categories, products, variants, colors, sizes, carts, orders, shipping options, and users.
-- Admin resources in [app/Filament/Resources](app/Filament/Resources) define structured CRUD screens for managing store data through Filament.
-- The app also uses Eloquent relationships to connect categories to subcategories, products to variants and images, and carts/orders to the customer and product data.
-- The project does not include a custom middleware directory; it uses Laravel’s built-in middleware and the Filament authentication/session stack configured in the admin provider.
+```text
+                    ┌──────────────────┐
+                    │   Blade Views    │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │   Controllers    │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │    Services      │
+                    │ Business Logic   │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Eloquent Models  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │    Database      │
+                    └──────────────────┘
+```
 
-This layered approach keeps controllers thin and moves catalog, pricing, cart, and order rules into reusable service classes.
+### Controllers
+
+Controllers are responsible for handling HTTP requests and returning the appropriate response or view.
+
+They are kept focused on request handling while business logic is delegated to service classes.
+
+---
+
+### Services
+
+Business logic is organized inside service classes.
+
+Typical responsibilities include:
+
+| Service              | Responsibility                                            |
+| -------------------- | --------------------------------------------------------- |
+| `ProductService`     | Product listing, filtering and product-related operations |
+| `CategoryService`    | Category-related operations                               |
+| `SubCategoryService` | Subcategory and product relationships                     |
+| `CartService`        | Cart operations and stock validation                      |
+| `CheckoutService`    | Checkout and order processing                             |
+| `OrderService`       | Order operations and cancellation                         |
+| `OtpService`         | OTP generation and verification                           |
+| `AuthService`        | Authentication-related business logic                     |
+| `WishlistService`    | Wishlist operations                                       |
+| `SocialAuthService`  | Google authentication                                     |
+| `ShippingService`    | Shipping option and price handling                        |
+
+> Service names may vary depending on the current implementation. The important architectural principle is keeping business logic outside controllers whenever practical.
+
+---
+
+## 🧩 Form Requests
+
+BeFit uses Laravel Form Requests to handle request validation.
+
+This keeps validation rules separated from controllers and makes request handling easier to maintain.
+
+Examples include validation for:
+
+* Cart operations
+* Checkout information
+* User profile information
+* Wishlist operations
+* OTP verification
+* Product-related requests
+* Authentication-related requests
+
+---
+
+## 🗄️ Database Models
+
+The main e-commerce entities include:
+
+| Model            | Responsibility                          |
+| ---------------- | --------------------------------------- |
+| `User`           | Store customers and authentication data |
+| `Category`       | Product categories                      |
+| `Subcategory`    | Categories' subcategories               |
+| `Product`        | Main store products                     |
+| `ProductImage`   | Product gallery images                  |
+| `ProductVariant` | Product color/size combinations         |
+| `Color`          | Available product colors                |
+| `Size`           | Available product sizes                 |
+| `Cart`           | Shopping cart items                     |
+| `Order`          | Customer orders                         |
+| `OrderItem`      | Products included in orders             |
+| `ShippingOption` | Shipping price by governorate           |
+
+### Main Relationships
+
+```text
+Category
+   │
+   ├── hasMany → Subcategories
+   │
+   └── hasMany → Products
+                    │
+                    ├── hasMany → ProductImages
+                    │
+                    └── hasMany → ProductVariants
+                                      │
+                                      ├── belongsTo → Color
+                                      │
+                                      └── belongsTo → Size
+```
+
+Orders are connected to users and contain order items representing the purchased products and their selected variants.
+
+---
+
+## 🔐 Security Features
+
+BeFit uses Laravel's built-in security mechanisms together with application-level validation.
+
+### Authentication Security
+
+* Password hashing through Laravel
+* Session-based authentication
+* CSRF protection
+* OTP-based email verification
+* OTP-based password reset
+* OTP expiration/verification handling
+* Google OAuth authentication
+* Separate admin authentication through Filament
+
+### E-commerce Security
+
+* Authentication checks for protected operations
+* Cart ownership validation
+* Product/variant availability validation
+* Stock validation before checkout
+* Validation of checkout information
+* Authorization checks for user-owned data
+* Admin access control
+
+---
+
+## 🌍 Localization
+
+BeFit supports bilingual product-related content.
+
+The catalog can contain:
+
+* English product names
+* Arabic product names
+* English category names
+* Arabic category names
+* English subcategory names
+* Arabic subcategory names
+* English color names
+* Arabic color names
+* English size names
+* Arabic size names
+
+The localization approach is primarily focused on **catalog data**, allowing products and store entities to contain both Arabic and English content.
+
+---
+
+## 🎨 Frontend
+
+The storefront is built using Laravel Blade and a responsive frontend design.
+
+### Frontend Technologies
+
+* Laravel Blade
+* Bootstrap 5
+* Custom CSS
+* JavaScript
+* Vite
+* Font Awesome
+* Responsive layouts
+* Custom UI components
+
+The frontend focuses on a modern sportswear aesthetic with:
+
+* Hero sections
+* Product cards
+* Category sections
+* Product galleries
+* Filters
+* Shopping cart interface
+* Wishlist interface
+* Responsive navigation
+* Mobile-friendly layouts
+
+---
+
+## 🐳 Docker Setup
+
+BeFit is configured to run using Docker.
+
+### Docker Stack
+
+The project includes Docker configuration for the Laravel application and supporting services.
+
+Typical services include:
+
+| Service            | Purpose                        |
+| ------------------ | ------------------------------ |
+| `befit_app`        | PHP/Laravel application        |
+| `befit_nginx`      | Nginx web server               |
+| `befit_phpmyadmin` | Database administration        |
+| MySQL              | Application database           |
+| Redis              | Cache/session-related services |
+
+Docker allows the development environment to remain isolated and consistent across machines.
+
+---
+
+## 💻 Requirements
+
+Before running BeFit locally, make sure you have:
+
+* Docker Desktop
+* Docker Compose
+* WSL2
+* Ubuntu on WSL2
+* Git
+* VS Code
+* GitHub account
+
+For Windows development, **WSL2 + Docker** is recommended.
+
+---
+
+## 🚀 Installation
+
+### 1. Clone the Repository
+
+Clone the project from GitHub:
+
+```bash
+cd /home/orabii
+
+git clone https://github.com/mohamedorabii/BeFit-Store.git
+
+cd BeFit-Store
+```
+
+---
+
+### 2. Open the Project in VS Code
+
+```bash
+code .
+```
+
+---
+
+### 3. Configure Environment Variables
+
+Create the environment file:
+
+```bash
+cp .env.example .env
+```
+
+Configure the database, application URL, mail settings, and other required environment variables according to your local Docker configuration.
+
+---
+
+### 4. Start Docker
+
+Build and start the containers:
+
+```bash
+docker compose up -d --build
+```
+
+Check the running containers:
+
+```bash
+docker ps
+```
+
+---
+
+### 5. Generate Application Key
+
+Run:
+
+```bash
+docker exec -it befit_app php artisan key:generate
+```
+
+---
+
+### 6. Run Database Migrations
+
+```bash
+docker exec -it befit_app php artisan migrate
+```
+
+If seeders are available and you want to populate the database:
+
+```bash
+docker exec -it befit_app php artisan db:seed
+```
+
+Or:
+
+```bash
+docker exec -it befit_app php artisan migrate --seed
+```
+
+---
+
+### 7. Create Storage Link
+
+```bash
+docker exec -it befit_app php artisan storage:link
+```
+
+---
+
+### 8. Install Frontend Dependencies
+
+If Node/npm is handled inside the project environment:
+
+```bash
+npm install
+```
+
+Then build the frontend:
+
+```bash
+npm run build
+```
+
+For development:
+
+```bash
+npm run dev
+```
+
+---
+
+## 🌐 Local URLs
+
+After starting Docker, the application can be accessed through:
+
+| Service         | URL                           |
+| --------------- | ----------------------------- |
+| 🏋️ BeFit Store | `http://localhost:8000`       |
+| 🖥️ Admin Panel | `http://localhost:8000/admin` |
+| 🗄️ phpMyAdmin  | `http://localhost:8080`       |
+
+> Ports depend on the values configured in `docker-compose.yml`.
+
+---
+
+## 🔧 Daily Development
+
+Start the containers:
+
+```bash
+cd /home/orabii/BeFit-Store
+
+docker compose up -d
+```
+
+Open the project:
+
+```bash
+code .
+```
+
+Check containers:
+
+```bash
+docker ps
+```
+
+Stop the project:
+
+```bash
+docker compose down
+```
+
+Rebuild containers when Docker configuration changes:
+
+```bash
+docker compose up -d --build
+```
+
+---
+
+## 🧹 Useful Laravel Commands
+
+Clear application caches:
+
+```bash
+docker exec -it befit_app php artisan optimize:clear
+```
+
+Run migrations:
+
+```bash
+docker exec -it befit_app php artisan migrate
+```
+
+Refresh migrations:
+
+```bash
+docker exec -it befit_app php artisan migrate:fresh
+```
+
+Run seeders:
+
+```bash
+docker exec -it befit_app php artisan db:seed
+```
+
+Create storage link:
+
+```bash
+docker exec -it befit_app php artisan storage:link
+```
+
+Open Laravel Tinker:
+
+```bash
+docker exec -it befit_app php artisan tinker
+```
+
+---
+
+## 🔧 Tech Stack
+
+### Backend
+
+| Technology        | Purpose                      |
+| ----------------- | ---------------------------- |
+| PHP               | Backend programming language |
+| Laravel 12        | Web application framework    |
+| Eloquent ORM      | Database interaction         |
+| Laravel Blade     | Server-side rendering        |
+| Laravel Socialite | Google OAuth                 |
+| Laravel UI        | Authentication scaffolding   |
+| Filament          | Admin dashboard              |
+
+### Frontend
+
+| Technology   | Purpose                  |
+| ------------ | ------------------------ |
+| Blade        | Server-rendered views    |
+| Bootstrap 5  | UI framework             |
+| JavaScript   | Client-side interactions |
+| Vite         | Frontend build tool      |
+| Font Awesome | Icons                    |
+| Custom CSS   | Storefront styling       |
+
+### Infrastructure
+
+| Technology | Purpose                       |
+| ---------- | ----------------------------- |
+| Docker     | Containerized development     |
+| Nginx      | Web server                    |
+| MySQL      | Relational database           |
+| Redis      | Caching / application support |
+| phpMyAdmin | Database management           |
+
+---
 
 ## 📁 Project Structure
 
 ```text
-BeFit/
+BeFit-Store/
+│
 ├── app/
-│   ├── Filament/          # Admin resources and pages
-│   ├── Http/              # Controllers, requests, and route-driven logic
-│   ├── Models/            # Eloquent models
-│   ├── Notifications/     # OTP notification email classes
-│   ├── Providers/         # App and Filament service providers
-│   └── Services/          # Business logic layer
+│   ├── Filament/
+│   │   ├── Resources/
+│   │   └── Pages/
+│   │
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   ├── Requests/
+│   │   └── Middleware/
+│   │
+│   ├── Models/
+│   │
+│   ├── Notifications/
+│   │
+│   ├── Providers/
+│   │
+│   └── Services/
+│
 ├── bootstrap/
+│
 ├── config/
+│
 ├── database/
-│   ├── migrations/        # Database schema definitions
-│   ├── seeders/           # Product/category/color/size data seeders
-│   └── factories/
-├── docker/                # Docker-related configuration
-├── public/                # Public web assets and generated files
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+│
+├── docker/
+│   └── nginx/
+│
+├── public/
+│
 ├── resources/
-│   ├── css/               # Stylesheets
-│   ├── js/                # Frontend JS entrypoints
-│   └── views/             # Blade storefront templates
+│   ├── css/
+│   ├── js/
+│   └── views/
+│
 ├── routes/
-│   └── web.php            # Application routes
+│   └── web.php
+│
 ├── storage/
-│   └── app/public/        # Uploaded media such as product/category images
-├── tests/                 # PHPUnit tests
+│   └── app/
+│
+├── tests/
+│
 ├── .env.example
+├── artisan
 ├── composer.json
 ├── docker-compose.yml
 ├── package.json
@@ -91,244 +660,141 @@ BeFit/
 └── README.md
 ```
 
-## 🔐 Authentication & Security
-
-The project includes multiple authentication and security mechanisms, all implemented in the codebase:
-
-- Standard Laravel web authentication for customers via the default auth routes and login/register flow.
-- Separate admin guard and admin model for Filament access.
-- Google social login using Laravel Socialite.
-- OTP-based email verification after registration.
-- OTP-based password reset with rate limiting and verification windows.
-- Password hashing via Laravel’s default hashing configuration.
-- CSRF protection enabled through the default Laravel middleware stack.
-- Session-based user and admin authentication with dedicated guards in [config/auth.php](config/auth.php).
-- Active/inactive status checks for users and products before allowing access to purchase and sign-in flows.
-
-## 🛍️ E-commerce Functionality
-
-The storefront is designed around a typical sportswear retail flow:
-
-1. Customers land on the home page showing featured categories and products.
-2. They can browse products from the shop page, using category, subcategory, size, color, and price filters.
-3. Product detail pages show the main gallery, price, badges, stock information, and variant selection.
-4. Users can select size and color combinations, then add items to the cart.
-5. The cart supports quantity updates and removal.
-6. Authenticated users can proceed to checkout, completing shipping details and choosing a shipping governorate option.
-7. Orders are created and stored with order items and captured variant information.
-8. Users can view their orders and cancel only pending orders.
-9. The wishlist stores items in session data and is available as a lightweight saved-items feature.
-
-## 🎨 Frontend
-
-The frontend is server-rendered Blade UI with Bootstrap 5 and custom styling:
-
-- Product cards, category cards, hero banners, and filter components are implemented as Blade component views under [resources/views/components](resources/views/components).
-- Shared layout is defined in [resources/views/layouts/app.blade.php](resources/views/layouts/app.blade.php).
-- Product pages include gallery thumbs and variant selection JavaScript for selecting color and size combinations.
-- The project uses CDN-hosted Bootstrap and Font Awesome styles for the storefront UI.
-- Responsive layout patterns are used throughout the storefront pages for mobile and desktop shopping flows.
-- The app is not built as a separate SPA; it is implemented as a traditional Laravel view-based storefront.
-
-## 🎛️ Admin Dashboard
-
-The admin dashboard is powered by Filament and is configured in [app/Providers/Filament/AdminPanelProvider.php](app/Providers/Filament/AdminPanelProvider.php).
-
-The available admin resources include:
-
-- Products
-- Categories
-- Subcategories
-- Users
-- Orders
-- Colors
-- Sizes
-- Shipping options
-
-The dashboard supports listing, viewing, creating, editing, and soft-deleting records for the main catalog and order data. Product management includes product galleries, variant configuration, and stock records through Filament forms.
-
-## 🌍 Localization
-
-The project includes bilingual fields for core commerce data:
-
-- English and Arabic names are stored for categories, subcategories, colors, sizes, and products.
-- [app/Models/Category.php](app/Models/Category.php) contains a locale-aware name accessor that selects Arabic or English labels based on the current app locale.
-- The project also includes default values and seed data in Arabic and English.
-
-However, this repository does not include dedicated Laravel language translation files under a lang directory, and the storefront views are mostly hardcoded in English. The current localization behavior is therefore centered on bilingual catalog data rather than a full app-wide translation system.
-
-## 🗄️ Database
-
-The database schema is built with Laravel migrations and includes the main entities used by the store.
-
-| Model | Purpose | Key relationships |
-| --- | --- | --- |
-| User | Customer and auth account | Has many carts, orders |
-| Admin | Filament admin user | Separate auth guard |
-| Category | Top-level store category | Has many subcategories, products |
-| Subcategory | Child category grouping | Belongs to category, has many products |
-| Product | Core item catalog record | Belongs to category/subcategory, has many images and variants |
-| ProductImage | Product gallery image | Belongs to product |
-| Color | Available color option | Has many variants |
-| Size | Available size option | Has many variants |
-| ProductVariant | SKU/stock variation | Belongs to product, color, size |
-| Cart | Session or user cart entry | Belongs to user, product, variant |
-| Order | Customer order | Belongs to user, has many order items |
-| OrderItem | Each order line item | Belongs to order, product, variant |
-| ShippingOption | Shipping price by governorate | Used during checkout |
-
-The most important database relationships include:
-
-- Categories have many subcategories and products.
-- Products belong to a category and optionally a subcategory.
-- Products have many images and many variants.
-- Product variants combine a color and a size with stock and SKU tracking.
-- Carts hold quantity by product and variant.
-- Orders store shipping and buyer details, while order items preserve the purchased variant metadata.
-
-## 🐳 Docker
-
-The project includes a Docker Compose setup with multiple services:
-
-- app: PHP/Laravel application container
-- webserver: Nginx reverse proxy
-- db: MySQL 8 container
-- phpmyadmin: database management UI
-- redis: Redis service
-- meilisearch: search service
-- mailpit: SMTP mail testing
-
-The Docker stack is defined in [docker-compose.yml](docker-compose.yml). It is the recommended way to run the project locally because the project includes the full development environment configuration.
-
-## ⚙️ Requirements
-
-Before running the project, make sure the following are available:
-
-- PHP 8.2 or newer
-- Composer
-- Node.js and npm
-- Docker and Docker Compose (recommended)
-- A browser for local development
-
-## 🚀 Installation
-
-### 1. Clone the repository
-
-```bash
-git clone <repository-url>
-cd BeFit
-```
-
-### 2. Configure environment variables
-
-```bash
-cp .env.example .env
-```
-
-For the Docker-based setup, use environment values consistent with the services in [docker-compose.yml](docker-compose.yml), especially the MySQL connection settings for the app container.
-
-The default [.env.example](.env.example) is a generic Laravel template and uses SQLite as the default DB connection, but the repository’s Docker environment is configured around MySQL.
-
-### 3. Install PHP and frontend dependencies
-
-```bash
-composer install
-npm install
-```
-
-### 4. Start the Docker environment
-
-```bash
-docker compose up -d --build
-```
-
-### 5. Run database migrations and seeders
-
-```bash
-docker compose exec app php artisan migrate
-Docker compose exec app php artisan db:seed
-```
-
-If you are running without Docker, use the equivalent local commands:
-
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-### 6. Generate the application key
-
-```bash
-php artisan key:generate
-```
-
-### 7. Set up public storage
-
-```bash
-php artisan storage:link
-```
-
-This is important because category, subcategory, and product images are served from the public storage disk.
-
-### 8. Build frontend assets
-
-```bash
-npm run build
-```
-
-For local development, you can also use:
-
-```bash
-npm run dev
-```
-
-## ▶️ Running the Project
-
-With Docker:
-
-```bash
-docker compose up
-```
-
-Then open:
-
-- Storefront: http://localhost:8000
-- Admin panel: http://localhost:8000/admin
-- phpMyAdmin: http://localhost:8080
-- Mailpit: http://localhost:8025
-
-For a direct local run without Docker:
-
-```bash
-php artisan serve
-npm run dev
-```
+---
 
 ## 🧪 Testing
 
-The repository includes PHPUnit tests under [tests](tests), including examples for OTP logic and password reset flows. However, the test suite is limited and not broad enough to claim complete coverage across the entire application.
+BeFit includes a Laravel testing structure under the `tests` directory.
 
-To run the test suite:
+Run the test suite with:
 
 ```bash
-php artisan test
+docker exec -it befit_app php artisan test
 ```
+
+You can also run a specific test file:
+
+```bash
+docker exec -it befit_app php artisan test tests/Feature/ExampleTest.php
+```
+
+---
+
+## 📦 Storage
+
+Product images and other publicly accessible files can be handled through Laravel's public storage disk.
+
+Create the symbolic link using:
+
+```bash
+docker exec -it befit_app php artisan storage:link
+```
+
+The public storage directory is connected to:
+
+```text
+public/storage
+```
+
+---
+
+## 🔄 Application Flow
+
+A typical shopping flow looks like:
+
+```text
+Customer
+   │
+   ▼
+Browse Store
+   │
+   ▼
+Select Product
+   │
+   ├── Select Color
+   │
+   └── Select Size
+   │
+   ▼
+Add to Cart
+   │
+   ▼
+Review Cart
+   │
+   ▼
+Checkout
+   │
+   ▼
+Select Shipping Option
+   │
+   ▼
+Create Order
+   │
+   ▼
+Order History
+```
+
+---
+
+## 🛡️ Admin Flow
+
+```text
+Administrator
+      │
+      ▼
+   /admin
+      │
+      ▼
+Filament Dashboard
+      │
+      ├── Products
+      │     ├── Images
+      │     ├── Colors
+      │     ├── Sizes
+      │     └── Variants
+      │
+      ├── Categories
+      │
+      ├── Subcategories
+      │
+      ├── Users
+      │
+      ├── Orders
+      │
+      └── Shipping Options
+```
+
+---
 
 ## 🚧 Future Improvements
 
-The codebase shows a mature storefront and admin foundation, and a few natural follow-ups would be:
+Potential future improvements include:
 
-- expanding the localization layer into a full app-wide i18n implementation
-- improving the order and shipping workflow with more advanced payment and fulfillment logic
-- broadening automated test coverage for storefront and checkout flows
-- adding more administrative reports and analytics
+* Online payment gateway integration
+* More advanced product variant management
+* Additional product attributes
+* Advanced analytics
+* Improved order management
+* More automated tests
+* Advanced search
+* Performance optimization
+* Full application-wide Arabic/English localization
+* Deployment and production optimization
 
-These are reasonable next steps based on the current code, but they are not currently implemented as core features.
+---
+
+## 📌 Project Status
+
+BeFit Store is a **Laravel-based sportswear e-commerce project** focused on providing a complete online shopping experience with product variants, inventory management, cart, wishlist, checkout, orders, authentication, and an administrative dashboard.
+
+The current application is a **web application** and does **not include a REST API**.
+
+---
 
 ## 👨‍💻 Author
 
-This project is authored in the existing repository context and is intended as a Laravel e-commerce implementation for BeFit. The project does not currently include a separate author file or portfolio metadata beyond the codebase itself.
+**Mohamed Alaa Oraby**
 
-## 📄 License
+Junior Backend Developer | PHP · Laravel
 
-This project declares the MIT license in [composer.json](composer.json).
+📧 `devmohamedalaaoraby@gmail.com`
